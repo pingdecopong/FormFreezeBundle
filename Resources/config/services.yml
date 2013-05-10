@@ -1,0 +1,9 @@
+services:
+    pingdecopong.form.type_extension.freeze:
+        class: pingdecopong\FormFreezeBundle\Form\Extension\FreezeTypeExtension
+        tags:
+            - { name: form.type_extension, alias: form }
+    pingdecopong.twig.extension.form:
+        class: pingdecopong\FormFreezeBundle\Twig\Extension\FormExtension
+        tags:
+            - { name: twig.extension }

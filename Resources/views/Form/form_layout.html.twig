@@ -1,0 +1,99 @@
+{% extends "form_div_layout.html.twig" %}
+
+{% block form_widget_simple %}
+    {% spaceless %}
+        {% set type = type|default('text') %}
+
+        {% if type != "hidden" and is_freeze(form) %}
+            <span class="confirmation">{{ value }}</span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        {% else %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_widget_simple %}
+
+
+{% block textarea_widget %}
+    {% spaceless %}
+        {% if is_freeze(form) %}
+            <span class="confirmation">{{ value|replace({ "\r\n": "\n" })|replace({ "\r": "\n" })|replace({ "\n": "<br />\n" })|raw }}</span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        {% else %}
+            <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+        {% endif %}
+    {% endspaceless %}
+{% endblock textarea_widget %}
+
+
+{% block choice_widget_expanded %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                {{ form_widget(child) }}
+                {% if is_freeze(form) %}
+                {% else %}
+                    {{ form_label(child) }}
+                {% endif %}
+
+            {% endfor %}
+        </div>
+    {% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+
+{% block choice_widget_collapsed %}
+    {% spaceless %}
+        {% if is_freeze(form) %}
+            {% for choice in choices %}
+                {% if choice is selectedchoice(value) %}
+                    <span class="confirmation1">{{ choice.label }}</span>
+                    <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ choice.value }}" {% endif %}/>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                {% if empty_value is not none %}
+                    <option value=""{% if required %} disabled="disabled"{% if value is empty %} selected="selected"{% endif %}{% endif %}>{{ empty_value|trans({}, translation_domain) }}</option>
+                {% endif %}
+                {% if preferred_choices|length > 0 %}
+                    {% set options = preferred_choices %}
+                    {{ block('choice_widget_options') }}
+                    {% if choices|length > 0 and separator is not none %}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {% endif %}
+                {% endif %}
+                {% set options = choices %}
+                {{ block('choice_widget_options') }}
+            </select>
+        {% endif %}
+    {% endspaceless %}
+{% endblock choice_widget_collapsed %}
+
+
+{% block checkbox_widget %}
+    {% spaceless %}
+        {% if is_freeze(form) %}
+            {% if checked %}
+                <span class="confirmation"">{{ label }}</span>&nbsp;
+                <input type="hidden" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} />
+            {% endif %}
+        {% else %}
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        {% endif %}
+    {% endspaceless %}
+{% endblock checkbox_widget %}
+
+
+{% block radio_widget %}
+    {% spaceless %}
+        {% if is_freeze(form) %}
+            {% if checked %}
+                <span class="confirmation">{{ label }}</span>
+                <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+            {% endif %}
+        {% else %}
+            <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        {% endif %}
+    {% endspaceless %}
+{% endblock radio_widget %}

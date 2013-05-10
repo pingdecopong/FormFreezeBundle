@@ -1,0 +1,21 @@
+{
+    "name": "pingdecopong/FormFreezeBundle",
+    "type": "symfony-bundle",
+    "description": "form freeze bundle.",
+    "keywords": ["form"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "pingdecopong",
+            "homepage": "https://github.com/pingdecopong"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": { "pingdecopong\\FormFreezeBundle": "" }
+    },
+    "target-dir": "pingdecopong/FormFreezeBundle"
+}
