@@ -9,7 +9,21 @@ class FormExtension extends \Twig_Extension
     {
         return array(
             'is_freeze'      => new \Twig_Function_Method($this, 'isFreeze'),
+            'is_novalidation'      => new \Twig_Function_Method($this, 'isNoValidation'),
         );
+    }
+
+    public function isNoValidation(FormView $view)
+    {
+        if(!empty($view->vars['novalidation']) && $view->vars['novalidation']){
+            return true;
+        }
+
+        if($this->isParentNoValidation($view)){
+            return true;
+        }
+
+        return false;
     }
 
     public function isFreeze(FormView $view)
@@ -30,6 +44,18 @@ class FormExtension extends \Twig_Extension
         while(null !== $view->parent){
             $view = $view->parent;
             if(!empty($view->vars['freeze']) && $view->vars['freeze']){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isParentNoValidation(FormView $view)
+    {
+        while(null !== $view->parent){
+            $view = $view->parent;
+            if(!empty($view->vars['novalidation']) && $view->vars['novalidation']){
                 return true;
             }
         }

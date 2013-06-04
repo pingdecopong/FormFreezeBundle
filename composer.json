@@ -1,5 +1,6 @@
 {
     "name": "pingdecopong/FormFreezeBundle",
+    "version": "0.0.2",
     "type": "symfony-bundle",
     "description": "form freeze bundle.",
     "keywords": ["form"],
